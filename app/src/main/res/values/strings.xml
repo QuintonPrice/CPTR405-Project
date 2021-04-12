@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Travel App</string>
+    <string name="this_is_the_start_of_my_mobile_app">This is the start of my mobile app!</string>
+    <string name="where_would_you_like_to_travel">Where would you like to travel?</string>
+    <string name="internationally">Internationally</string>
+    <string name="locally">Locally</string>
 </resources>

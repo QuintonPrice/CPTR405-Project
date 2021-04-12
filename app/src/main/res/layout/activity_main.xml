@@ -7,12 +7,69 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/welcome_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is the start of my mobile app!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/this_is_the_start_of_my_mobile_app"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="50dp" />
+
+    <TextView
+        android:id="@+id/travel_question"
+        android:text="@string/where_would_you_like_to_travel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_text_view" />
+
+    <RadioGroup
+        android:id="@+id/travel_radio"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/travel_question"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <RadioButton android:id="@+id/radio_local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/locally" />
+
+        <RadioButton android:id="@+id/radio_international"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/internationally" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/radio_output"
+        android:text=""
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/travel_radio" />
+
+    <ImageView
+        android:id="@+id/seattle_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/radio_output"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/seattle"
+        />
+
+
+<!-- Implement this instead of the RadioGroup above   <Spinner
+        android:id="@+id/destinationSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
