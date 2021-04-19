@@ -37,12 +37,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <RadioButton android:id="@+id/radio_local"
+        <RadioButton
+            android:id="@+id/radio_local"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/locally"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/locally" />
+            app:layout_constraintRight_toRightOf="parent" />
 
         <RadioButton android:id="@+id/radio_international"
             android:layout_width="wrap_content"
@@ -51,17 +52,13 @@
             app:layout_constraintRight_toRightOf="parent"
             android:text="@string/internationally" />
 
-    </RadioGroup>
+        <Button
+            android:id="@+id/find_destinations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/find_destinations" />
 
-    <Button
-        android:id="@+id/find_destinations"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/travel_radio"
-        android:text="@string/find_destinations"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        />
+    </RadioGroup>
 
 
     <TextView
@@ -76,18 +73,17 @@
     <ImageView
         android:id="@+id/seattle_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/radio_output"
+        android:layout_height="0dp"
+        android:src="@drawable/seattle"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/seattle"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/travel_radio" />
 
 
-
-<!-- Implement this instead of the RadioGroup above   <Spinner
-        android:id="@+id/destinationSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />-->
+    <!-- Implement this instead of the RadioGroup above   <Spinner
+            android:id="@+id/destinationSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
