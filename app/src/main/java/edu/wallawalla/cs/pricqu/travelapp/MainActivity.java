@@ -13,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         View mTravelRadio = findViewById(R.id.travel_radio);
-
 /*        public void onRadioButtonClicked(android.view.View view) {
             // Which radio button was selected?
             switch (view.getId()) {
@@ -27,5 +26,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }*/
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // insert items that need to be saved. currently don't have any
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
