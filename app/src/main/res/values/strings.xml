@@ -6,4 +6,6 @@
     <string name="locally">Locally</string>
     <string name="find_destinations">Find destinations!</string>
     <string name="number_of_travelers">Number of travelers</string>
+    <string name="_2">2</string>
+    <string name="how_many_travelers">How many travelers?</string>
 </resources>

@@ -55,18 +55,19 @@
 
     <TextView
         android:id="@+id/number_travelers_question"
-        android:text="How many travelers?"
+        android:text="@string/how_many_travelers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/travel_radio"
     />
+
     <EditText
         android:id="@+id/how_many_travelers"
         android:inputType="number"
         app:layout_constraintTop_toBottomOf="@id/number_travelers_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="2 "
+        android:hint="@string/_2"
         style="@style/FontStyle"
     />
 

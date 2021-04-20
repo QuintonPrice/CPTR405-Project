@@ -1,6 +1,8 @@
 package edu.wallawalla.cs.pricqu.travelapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.widget.EditText;
 import android.widget.TextView;
 import android.os.Bundle;
 import android.widget.RadioButton;
@@ -29,8 +31,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(Bundle outState) {
         // insert items that need to be saved. currently don't have any
-        super.onSaveInstanceState(savedInstanceState);
+        super.onSaveInstanceState(outState);
+        final EditText textBox = (EditText) findViewById(R.id.how_many_travelers);
+        CharSequence userText = textBox.getText();
+        outState.putCharSequence("savedText", userText);
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedState) {
+        final EditText textBox = (EditText) findViewById(R.id.how_many_travelers);
+        CharSequence userText = savedState.getCharSequence("savedText");
+        textBox.setText(userText);
     }
 }
