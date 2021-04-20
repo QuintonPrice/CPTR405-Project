@@ -63,13 +63,13 @@
 
     <EditText
         android:id="@+id/how_many_travelers"
-        android:inputType="number"
+        android:inputType="numberSigned"
         app:layout_constraintTop_toBottomOf="@id/number_travelers_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/_2"
         style="@style/FontStyle"
-    />
+        />
 
     <Button
         android:id="@+id/find_destinations"
