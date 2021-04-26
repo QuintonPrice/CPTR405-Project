@@ -4,8 +4,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +64,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void exitApp() {
+    public void touchDialog() {
+        // creates object of AlertDialogue Builder class
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
+        // message for the dialogue
+        builder.setMessage("This shows that you have put your finger on the screen");
+
+        // alert title
+        builder.setTitle("Touch dialog");
+
+        // keeps it so that if the user clicks outside of the dialogue box, it will stay up
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Ok", null);
+
+        // creates the alert dialogue
+        AlertDialog alertDialog = builder.create();
+
+        // shows the alert dialogue
+        alertDialog.show();
+    }
+
+    // creates dialogue for exiting app
+    public void exitApp() {
         // creates object of AlertDialogue Builder class
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -146,5 +172,26 @@ public class MainActivity extends AppCompatActivity {
         textBox.setText(userText);
     }
 
+    public boolean onTouchEvent(MotionEvent event){
+        String action = "";
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                action = "ACTION_DOWN";
+                touchDialog();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                action = "ACTION_MOVE";
+                break;
+            case MotionEvent.ACTION_UP:
+                action = "ACTION_UP";
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                action = "ACTION_CANCEL";
+                break;
+        }
 
+        Log.d(TAG, action + " x = " + event.getX() +
+                " y = " + event.getY());
+        return true;
+    }
 }
