@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_help"
+        android:title="@string/help"
+        android:icon="@drawable/help_icon2"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_destinations_list"
+        android:title="@string/list_of_Destinations"
+        app:showAsAction="never"/>
+
+</menu>

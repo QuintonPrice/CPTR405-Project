@@ -2,6 +2,8 @@ package edu.wallawalla.cs.pricqu.travelapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
 /*        public void onRadioButtonClicked(android.view.View view) {
             // Which radio button was selected?
             switch (view.getId()) {
@@ -53,6 +58,31 @@ public class MainActivity extends AppCompatActivity {
             }
         }*/
 
+    }
+
+    // creates the menu and inflates items
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    // for handling the selection of menu items
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        if (item.getItemId() == R.id.action_help) {
+            // Help button selected
+            Toast.makeText(getApplicationContext(),"Help menu will be added later!",Toast.LENGTH_LONG).show();
+            return true;
+        }
+        else if (item.getItemId() == R.id.action_destinations_list) {
+            // About selected
+            Toast.makeText(getApplicationContext(),"List of destinations will be added later!",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // for saving state values
@@ -73,4 +103,6 @@ public class MainActivity extends AppCompatActivity {
         CharSequence userText = savedState.getCharSequence("savedText");
         textBox.setText(userText);
     }
+
+
 }

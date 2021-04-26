@@ -8,4 +8,7 @@
     <string name="number_of_travelers">Number of travelers</string>
     <string name="_2">2</string>
     <string name="how_many_travelers">How many travelers?</string>
+    <string name="help">Help</string>
+    <string name="search">Search</string>
+    <string name="list_of_Destinations">List of Destinations</string>
 </resources>
