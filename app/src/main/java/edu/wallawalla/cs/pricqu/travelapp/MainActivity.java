@@ -1,7 +1,9 @@
 package edu.wallawalla.cs.pricqu.travelapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -16,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -60,6 +60,43 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void exitApp() {
+
+        // creates object of AlertDialogue Builder class
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        // message for the dialogue
+        builder.setMessage("Do you really want to exit the app?");
+
+        // alert title
+        builder.setTitle("Exit app?");
+
+        // keeps it so that if the user clicks outside of the dialogue box, it will stay up
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        // negative button
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // if user clicks no, then the dialogue box simply cancels
+                dialog.cancel();
+            }
+        });
+
+        // creates the alert dialogue
+        AlertDialog alertDialog = builder.create();
+
+        // shows the alert dialogue
+        alertDialog.show();
+    }
+
     // creates the menu and inflates items
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -77,8 +114,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (item.getItemId() == R.id.action_destinations_list) {
-            // About selected
+            // Destination list selected
             Toast.makeText(getApplicationContext(),"List of destinations will be added later!",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (item.getItemId() == R.id.action_exit_app) {
+            // Exit app selected
+            exitApp();
             return true;
         }
 

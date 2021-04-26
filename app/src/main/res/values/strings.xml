@@ -11,4 +11,5 @@
     <string name="help">Help</string>
     <string name="search">Search</string>
     <string name="list_of_Destinations">List of Destinations</string>
+    <string name="exit_app">Exit app</string>
 </resources>
