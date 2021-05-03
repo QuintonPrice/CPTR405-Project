@@ -4,7 +4,7 @@
     <string name="where_would_you_like_to_travel">Where would you like to travel?</string>
     <string name="internationally">Internationally</string>
     <string name="locally">Locally</string>
-    <string name="find_destinations">Find destinations!</string>
+    <string name="find_destinations">View destinations!</string>
     <string name="number_of_travelers">Number of travelers</string>
     <string name="_2">2</string>
     <string name="how_many_travelers">How many travelers?</string>
@@ -17,4 +17,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_for_destination_list">Fragment for destination list</string>
+    <string name="load_master_detail">Load master-detail</string>
+    <string name="title_city_list">Cities</string>
+    <string name="title_city_detail">City Detail</string>
 </resources>

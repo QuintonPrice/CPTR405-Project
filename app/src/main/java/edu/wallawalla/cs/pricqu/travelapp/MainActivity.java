@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         View mTravelRadio = findViewById(R.id.travel_radio);
 
         // find destinations button and functions
+        // TODO: make fragment take up more of the screen
         final Button findDestinationsButton = findViewById(R.id.find_destinations);
         findDestinationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
