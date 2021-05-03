@@ -2,6 +2,7 @@ package edu.wallawalla.cs.pricqu.travelapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
         findDestinationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // TODO: Add functionality to find destinations
-                exitApp();
+                FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
+                fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
+                fragment.commit();
             }
         });
     }
