@@ -21,6 +21,7 @@ public class Activity2 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Activity2.this,CityListActivity.class);
                 startActivity(intent);
+                // TODO: Add this functionality to main activity
             }
         });
     }
