@@ -6,27 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/welcome_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/this_is_the_start_of_my_mobile_app"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="50dp"
-        style="@style/TitleStyle"
-    />
 
     <TextView
         android:id="@+id/travel_question"
-        android:text="@string/where_would_you_like_to_travel"
-        android:layout_height="wrap_content"
+        style="@style/FontStyle"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/where_would_you_like_to_travel"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcome_text_view"
-        style="@style/FontStyle"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/travel_radio"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,42 +28,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         View mTravelRadio = findViewById(R.id.travel_radio);
+
+        // find destinations button and functions
         final Button findDestinationsButton = findViewById(R.id.find_destinations);
         findDestinationsButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            public void onClick(View v) {
-                EditText numberInputEditText=findViewById(R.id.how_many_travelers);
-                String temp = numberInputEditText.getText().toString();
-                int value = 0;
-                if (!"".equals(temp)) {
-                    value=Integer.parseInt(temp);
-                }
-                if (value == 0) {
-                    Toast.makeText(getApplicationContext(), "Cannot have 0 travelers!", Toast.LENGTH_SHORT).show();
-                }
-                else if (value > 0) {
-                    Toast.makeText(getApplicationContext(), "Valid number of travelers!", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View v) { // TODO: Add functionality to launch second activity
+                Intent intent = new Intent(MainActivity.this,Activity2.class);
+                startActivity(intent);
             }
         });
-
-
-
-/*        public void onRadioButtonClicked(android.view.View view) {
-            // Which radio button was selected?
-            switch (view.getId()) {
-                case R.id.radio_yes:
-                    findViewById(R.id.radio_output.setText("Button1 has been chosen");
-                    // "Local" selected
-                    break;
-                case R.id.radio_no:
-                    // "International" selected
-                    break;
-            }
-        }*/
-
     }
+
 
     public void touchDialog() {
         // creates object of AlertDialogue Builder class

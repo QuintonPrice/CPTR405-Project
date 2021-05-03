@@ -12,4 +12,9 @@
     <string name="search">Search</string>
     <string name="list_of_Destinations">List of Destinations</string>
     <string name="exit_app">Exit app</string>
+    <string name="textview">TextView</string>
+    <string name="this_is_the_second_activity">This is the second activity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_for_destination_list">Fragment for destination list</string>
 </resources>
