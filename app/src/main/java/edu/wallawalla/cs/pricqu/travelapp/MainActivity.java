@@ -33,9 +33,8 @@ public class MainActivity extends AppCompatActivity {
         final Button findDestinationsButton = findViewById(R.id.find_destinations);
         findDestinationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { // TODO: Add functionality to launch second activity
-                Intent intent = new Intent(MainActivity.this,Activity2.class);
-                startActivity(intent);
+            public void onClick(View v) { // TODO: Add functionality to find destinations
+                exitApp();
             }
         });
     }
@@ -118,7 +117,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (item.getItemId() == R.id.action_destinations_list) {
             // Destination list selected
-            Toast.makeText(getApplicationContext(),"List of destinations will be added later!",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,Activity2.class);
+            startActivity(intent);
             return true;
         }
         else if (item.getItemId() == R.id.action_exit_app) {
