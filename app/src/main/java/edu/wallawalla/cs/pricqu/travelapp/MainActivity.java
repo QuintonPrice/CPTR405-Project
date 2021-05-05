@@ -42,7 +42,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    // dialogue for help button
+    public void helpDialog() {
+        // creates object of AlertDialogue Builder class
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        // message for the dialogue
+        builder.setMessage("Help menu will be added later!");
+        // alert title
+        builder.setTitle("Help Menu");
+        // keeps it so that if the user clicks outside of the dialogue box, it will stay up
+        builder.setCancelable(false);
+        builder.setPositiveButton("Ok!", null);
+        // creates the alert dialogue
+        AlertDialog alertDialog = builder.create();
+        // shows the alert dialogue
+        alertDialog.show();
+    }
 
     public void touchDialog() {
         // creates object of AlertDialogue Builder class
@@ -116,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         if (item.getItemId() == R.id.action_help) {
             // Help button selected
-            Toast.makeText(getApplicationContext(),"Help menu will be added later!",Toast.LENGTH_LONG).show();
+            helpDialog();
             return true;
         }
         else if (item.getItemId() == R.id.action_destinations_list) {
