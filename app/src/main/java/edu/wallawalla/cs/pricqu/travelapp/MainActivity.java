@@ -134,10 +134,16 @@ public class MainActivity extends AppCompatActivity {
             helpDialog();
             return true;
         }
+        else if (item.getItemId() == R.id.action_settings) {
+            // Settings button selected
+            Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
         else if (item.getItemId() == R.id.action_destinations_list) {
             // Destination list selected
-            Intent intent = new Intent(MainActivity.this,Activity2.class);
-            startActivity(intent);
+            Intent destinationIntent = new Intent(MainActivity.this,Activity2.class);
+            startActivity(destinationIntent);
             return true;
         }
         else if (item.getItemId() == R.id.action_exit_app) {
