@@ -1,11 +1,24 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="Personal Info">
+    <PreferenceCategory app:title="Travel Info">
 
         <EditTextPreference
             app:key="userName"
             app:title="Your name"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <EditTextPreference
+            app:key="destinationOne"
+            app:title="First destination"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <EditTextPreference
+            app:key="destinationTwo"
+            app:title="Second destination"
+            app:useSimpleSummaryProvider="true"
+            />
 
     </PreferenceCategory>
 

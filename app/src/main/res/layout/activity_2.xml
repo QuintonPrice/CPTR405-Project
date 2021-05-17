@@ -26,12 +26,14 @@
         android:layout_marginTop="16dp"
         android:text="@string/load_master_detail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@id/textView" />
+
 
     <FrameLayout
         android:id="@+id/cityListPlaceholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

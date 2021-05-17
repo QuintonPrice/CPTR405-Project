@@ -3,7 +3,6 @@ package edu.wallawalla.cs.pricqu.travelapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.widget.RadioButton;
 import android.view.View;
 import android.widget.Toast;
+import android.location.Location;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +41,48 @@ public class MainActivity extends AppCompatActivity {
                 fragment.commit();
             }
         });
+
+        final Button findDistanceButton = findViewById(R.id.);
+
     }
+
+    public void findDistanceBetween() {
+        TextView mDistanceBetween = findViewById(R.id.destination_distance);
+        EditText mDestination = findViewById(R.id.distance_destination_input);
+        // String destinationString = mDestination.getText().toString();
+
+        Location currLocation = new Location("currLocation");
+        Location destLocation = new Location("destLocation");
+
+        // Clear result
+        mDistanceBetween.setText("");
+
+        // Create a background thread
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Find the distance between location and destination
+                currLocation.getLatitude(); // get the current device latitude
+                currLocation.getLongitude(); // get the current device longitude
+
+                destLocation.setLatitude(47.6205); // sets latitude of space needle
+                destLocation.setLongitude(122.3493); // sets longitude of space needle
+
+                float distanceFloat = currLocation.distanceTo(destLocation);
+                String distanceString = String.valueOf(distanceFloat);
+
+                // UI should only be updated by main thread
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDistanceBetween.setText("Distance between location and destination: " + distanceFloat);
+                    }
+                });
+            }
+        });
+        thread.start();
+    }
+
     // dialogue for help button
     public void helpDialog() {
         // creates object of AlertDialogue Builder class
