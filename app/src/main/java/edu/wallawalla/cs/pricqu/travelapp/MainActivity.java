@@ -42,8 +42,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button findDistanceButton = findViewById(R.id.);
-
+        // find distance between locations
+        final Button findDistanceButton = findViewById(R.id.destination_distance_button);
+        findDistanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findDistanceBetween();
+            }
+        });
     }
 
     public void findDistanceBetween() {
@@ -66,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 currLocation.getLongitude(); // get the current device longitude
 
                 destLocation.setLatitude(47.6205); // sets latitude of space needle
-                destLocation.setLongitude(122.3493); // sets longitude of space needle
+                destLocation.setLongitude(-122.3493); // sets longitude of space needle
 
-                float distanceFloat = currLocation.distanceTo(destLocation);
+                float distanceFloat = currLocation.distanceTo(destLocation) / 1000;
                 String distanceString = String.valueOf(distanceFloat);
 
                 // UI should only be updated by main thread
