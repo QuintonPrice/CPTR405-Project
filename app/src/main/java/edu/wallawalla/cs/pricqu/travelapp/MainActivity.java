@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
@@ -11,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationListener;
@@ -32,16 +34,22 @@ import android.location.Location;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
+    long locationTime;
+
+    int LOCATION_REQUEST_CODE = 10001;
     private static final String TAG = "MainActivity";
-    private static final int REQUEST_LOCATION = 1;
     private Object LocationManager;
-    private FusedLocationProviderClient fusedLocationClient;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        // ActivityCompat.requestPermissions( this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // find destinations button and functions
         // TODO: make fragment take up more of the screen
@@ -75,6 +81,68 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getLastLocation();
+        } else {
+            askLocationPermission();
+        }
+
+    }
+
+    private void getLastLocation() {
+        @SuppressLint("MissingPermission") Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    // set currLatitude and currLongitude
+                    currLatitude = location.getLatitude();
+                    currLongitude = location.getLongitude();
+                    locationTime = location.getTime();
+                    Log.i(TAG, "currLatitude: " + currLatitude + "currLongitude: " + currLongitude);
+                } else {
+                    Log.d(TAG, "onSuccess: Location was null...");
+                }
+            }
+        });
+
+        locationTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: " + e.getLocalizedMessage());
+            }
+        });
+    }
+
+
+    private void askLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,  Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Log.d(TAG, "askLotcationPermission: should show alert dialogue");
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+            }
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+                getLastLocation();
+            } else {
+                // Permission not granted
+            }
+        }
+    }
+
     public void findDistanceBetween() {
         EditText mDestination = findViewById(R.id.distance_destination_input);
         String destinationString = mDestination.getText().toString();
@@ -90,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 double destLatitude = 47.6062, destLongitude = -122.3321; // initializes longitude and latitude to Seattle
-                double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
 
                 // Find the distance between location and destination
                 try {
@@ -121,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         // creates dialogue for distance
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Distance between location and destination: " + distanceString + " kilometers from you");
+                        builder.setMessage("Distance between location and destination: " + distanceString + " kilometers from you. NOTE: Uses current location for Gogoleplex, unless you spoof location");
                         builder.setTitle("Distance");
                         builder.setCancelable(false);
                         builder.setPositiveButton("Close", null);
