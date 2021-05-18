@@ -3,8 +3,13 @@ package edu.wallawalla.cs.pricqu.travelapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.provider.Telephony;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +22,11 @@ import android.widget.RadioButton;
 import android.view.View;
 import android.widget.Toast;
 import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,26 +63,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void findDistanceBetween() {
-        TextView mDistanceBetween = findViewById(R.id.destination_distance);
         EditText mDestination = findViewById(R.id.distance_destination_input);
-        // String destinationString = mDestination.getText().toString();
+        String destinationString = mDestination.getText().toString();
+        Geocoder geoCoder = new Geocoder(this);
 
         Location currLocation = new Location("currLocation");
         Location destLocation = new Location("destLocation");
-
-        // Clear result
-        mDistanceBetween.setText("");
 
         // Create a background thread
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 // Find the distance between location and destination
-                currLocation.getLatitude(); // get the current device latitude
-                currLocation.getLongitude(); // get the current device longitude
+                double destLatitude = 47.6062, destLongitude = -122.3321; // initializes longitude and latitude to Seattle
 
-                destLocation.setLatitude(47.6205); // sets latitude of space needle
-                destLocation.setLongitude(-122.3493); // sets longitude of space needle
+                try {
+                    List<Address> addresses = geoCoder.getFromLocationName(destinationString, 1);
+                    if (addresses.size() > 0) {
+                        destLatitude = addresses.get(0).getLatitude();
+                        destLongitude = addresses.get(0).getLongitude();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                // TODO: Find a way to get the current device GPS coordinates. getLatitude & getLongitude are GETTER functions, don't actually return values
+
+                // sets college place coordinates
+                currLocation.setLatitude(46.0493);
+                currLocation.setLongitude(-118.3883);
+
+                destLocation.setLatitude(destLatitude);
+                destLocation.setLongitude(destLongitude);
 
                 float distanceFloat = currLocation.distanceTo(destLocation) / 1000;
                 String distanceString = String.valueOf(distanceFloat);
@@ -81,7 +103,14 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mDistanceBetween.setText("Distance between location and destination: " + distanceFloat);
+                        // creates dialogue for distance
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Distance between location and destination: " + distanceString + " kilometers from you");
+                        builder.setTitle("Distance");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("Close", null);
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 });
             }
@@ -106,24 +135,20 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+
+
     public void touchDialog() {
         // creates object of AlertDialogue Builder class
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
         // message for the dialogue
         builder.setMessage("This shows that you have put your finger on the screen");
-
         // alert title
         builder.setTitle("Touch dialog");
-
         // keeps it so that if the user clicks outside of the dialogue box, it will stay up
         builder.setCancelable(false);
-
         builder.setPositiveButton("Ok", null);
-
         // creates the alert dialogue
         AlertDialog alertDialog = builder.create();
-
         // shows the alert dialogue
         alertDialog.show();
     }
@@ -132,23 +157,18 @@ public class MainActivity extends AppCompatActivity {
     public void exitApp() {
         // creates object of AlertDialogue Builder class
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
         // message for the dialogue
         builder.setMessage("Do you really want to exit the app?");
-
         // alert title
         builder.setTitle("Exit app?");
-
         // keeps it so that if the user clicks outside of the dialogue box, it will stay up
         builder.setCancelable(false);
-
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
-
         // negative button
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
@@ -157,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-
         // creates the alert dialogue
         AlertDialog alertDialog = builder.create();
 
