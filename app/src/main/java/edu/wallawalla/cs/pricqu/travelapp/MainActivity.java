@@ -1,14 +1,20 @@
 package edu.wallawalla.cs.pricqu.travelapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.provider.Telephony;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +29,8 @@ import android.view.View;
 import android.widget.Toast;
 import android.location.Location;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -31,6 +39,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_LOCATION = 1;
+    private Object LocationManager;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View mTravelRadio = findViewById(R.id.travel_radio);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // ActivityCompat.requestPermissions( this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
         // find destinations button and functions
         // TODO: make fragment take up more of the screen
@@ -72,11 +85,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Create a background thread
         Thread thread = new Thread(new Runnable() {
+            @SuppressLint("MissingPermission")
             @Override
             public void run() {
-                // Find the distance between location and destination
-                double destLatitude = 47.6062, destLongitude = -122.3321; // initializes longitude and latitude to Seattle
 
+                double destLatitude = 47.6062, destLongitude = -122.3321; // initializes longitude and latitude to Seattle
+                double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
+
+                // Find the distance between location and destination
                 try {
                     List<Address> addresses = geoCoder.getFromLocationName(destinationString, 1);
                     if (addresses.size() > 0) {
@@ -87,11 +103,11 @@ public class MainActivity extends AppCompatActivity {
                     ex.printStackTrace();
                 }
 
-                // TODO: Find a way to get the current device GPS coordinates. getLatitude & getLongitude are GETTER functions, don't actually return values
+                // TODO: get current location
 
                 // sets college place coordinates
-                currLocation.setLatitude(46.0493);
-                currLocation.setLongitude(-118.3883);
+                currLocation.setLatitude(currLatitude);
+                currLocation.setLongitude(currLongitude);
 
                 destLocation.setLatitude(destLatitude);
                 destLocation.setLongitude(destLongitude);
