@@ -17,6 +17,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.provider.Telephony;
 import android.util.Log;
 import android.view.Menu;
@@ -43,6 +45,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    MediaPlayer mMediaPlayer;
     double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
     long locationTime;
 
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         findDestinationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // TODO: Add functionality to find destinations
+                playButtonClick(this);
                 FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
                 fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
                 fragment.commit();
@@ -81,6 +85,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void playButtonClick(View.OnClickListener v) {
+        mMediaPlayer = MediaPlayer.create(this, R.raw.note_f);
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mMediaPlayer.start();
+            }
+        });
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mMediaPlayer.release();
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -89,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             askLocationPermission();
         }
-
     }
 
     private void getLastLocation() {
