@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -46,8 +48,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     MediaPlayer mMediaPlayer;
     double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
     long locationTime;
@@ -62,7 +62,31 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Add setting so that dark mode can be enabled
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_TIME); // dark mode follows system
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_TIME); // dark mode follows system
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+       /* SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
+        sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("dark_mode_activity")){
+                    //finish();
+                    //startActivity(getIntent());
+                    helpDialog();
+                }
+            }
+        };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+*/
+
+        // sets dark mode (app must be relaunched)
+        Boolean darkModeBool = sharedPreferences.getBoolean("dark_mode_switch", false);
+        if (!darkModeBool) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // dark mode off
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // dark mode on
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -106,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onStart() {

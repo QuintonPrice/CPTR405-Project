@@ -9,4 +9,9 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="dark_mode">
+        <item>Dark Mode</item>
+        <item>Light Mode</item>
+    </string-array>
 </resources>
