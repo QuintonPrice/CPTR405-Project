@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity2">
+    tools:context=".Activity2"
+    android:background="@color/bgColor">
 
     <TextView
         android:id="@+id/textView"
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
         android:layout_marginLeft="124dp"
+        android:background="@color/bgColor"
         android:text="@string/this_is_the_second_activity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

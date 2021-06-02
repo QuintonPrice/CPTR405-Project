@@ -1,6 +1,8 @@
 package edu.wallawalla.cs.pricqu.travelapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
@@ -24,5 +26,11 @@ public class Activity2 extends AppCompatActivity {
                 // TODO: Add this functionality to main activity
             }
         });
+        /*loadMasterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+        });*/
     }
 }

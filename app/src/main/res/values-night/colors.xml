@@ -7,7 +7,7 @@
 
     <color name="accentColor">#52B788</color>
 
-    <color name="bgColor">#FFFFFF</color>
+    <color name="bgColor">#060D33</color>
 
-    <color name="textColor">#000000</color>
+    <color name="textColor">#FFFFFFFF</color>
 </resources>

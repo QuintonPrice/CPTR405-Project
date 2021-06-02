@@ -3,6 +3,7 @@ package edu.wallawalla.cs.pricqu.travelapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -45,6 +46,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     MediaPlayer mMediaPlayer;
     double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
     long locationTime;
@@ -57,22 +60,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // TODO: Add setting so that dark mode can be enabled
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_TIME); // dark mode follows system
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // find destinations button and functions
-        // TODO: make fragment take up more of the screen
         final Button findDestinationsButton = findViewById(R.id.find_destinations);
         findDestinationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // TODO: Add functionality to find destinations
-                playButtonClick(this);
                 FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
                 fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
                 fragment.commit();
             }
+
         });
 
         // find distance between locations
