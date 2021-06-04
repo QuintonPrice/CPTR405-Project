@@ -12,7 +12,15 @@
 
     <item android:id="@+id/action_destinations_list"
         android:title="@string/list_of_Destinations"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+        />
+
+    <item android:id="@+id/action_google_maps"
+        android:title="@string/google_maps"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/map_icon"
+        />
+
 
     <item android:id="@+id/action_exit_app"
         android:title="@string/exit_app"

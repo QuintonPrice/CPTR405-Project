@@ -44,6 +44,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,10 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // TODO: Add setting so that dark mode can be enabled
-
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_TIME); // dark mode follows system
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
        /* SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
@@ -88,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // dark mode on
         }
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // find destinations button and functions
@@ -102,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
                 fragment.commit();
             }
-
         });
 
         // find distance between locations
@@ -111,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 findDistanceBetween();
+                playButtonClick(this);
             }
         });
     }
@@ -230,7 +226,8 @@ public class MainActivity extends AppCompatActivity {
                 destLocation.setLongitude(destLongitude);
 
                 float distanceFloat = currLocation.distanceTo(destLocation) / 1000;
-                String distanceString = String.valueOf(distanceFloat);
+                DecimalFormat formattedDistance = new DecimalFormat("###.##");
+                String distanceString = formattedDistance.format(distanceFloat);
 
                 // UI should only be updated by main thread
                 MainActivity.this.runOnUiThread(new Runnable() {
@@ -341,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (item.getItemId() == R.id.action_destinations_list) {
             // Destination list selected
-            Intent destinationIntent = new Intent(MainActivity.this,Activity2.class);
+            Intent destinationIntent = new Intent(MainActivity.this,CityListActivity.class);
             startActivity(destinationIntent);
             return true;
         }
@@ -349,6 +346,10 @@ public class MainActivity extends AppCompatActivity {
             // Exit app selected
             exitApp();
             return true;
+        }
+        else if (item.getItemId() == R.id.action_google_maps) {
+            Intent mapsIntent = new Intent(MainActivity.this, MapsActivity.class);
+            startActivity(mapsIntent);
         }
 
         return super.onOptionsItemSelected(item);
