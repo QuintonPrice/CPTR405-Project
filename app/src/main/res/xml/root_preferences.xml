@@ -10,14 +10,25 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Themes">
+    <PreferenceCategory
+        app:summary="Reload to see changes"
+        app:title="Themes">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="dark_mode_switch"
-            android:summaryOff="Reload app to see changes"
-            android:summaryOn="Reload app to see changes"
+            android:summaryOff="Light"
+            android:summaryOn="Dark"
             android:title="Dark Mode" />
+
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="true"
+            android:key="use_kilometers"
+            android:summaryOff="Miles"
+            android:summaryOn="Kilometers"
+            android:title="Length Unit" />
 
     </PreferenceCategory>
 

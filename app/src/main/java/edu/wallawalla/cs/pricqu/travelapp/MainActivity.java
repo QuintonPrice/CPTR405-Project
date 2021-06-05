@@ -11,34 +11,25 @@ import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
-import android.provider.Telephony;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.os.Bundle;
-import android.widget.RadioButton;
 import android.view.View;
-import android.widget.Toast;
 import android.location.Location;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -52,10 +43,9 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mMediaPlayer;
     double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
     long locationTime;
-
+    boolean useKilometers = true;
     int LOCATION_REQUEST_CODE = 10001;
     private static final String TAG = "MainActivity";
-    private Object LocationManager;
     FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
@@ -64,26 +54,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-       /* SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
-        sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals("dark_mode_activity")){
-                    //finish();
-                    //startActivity(getIntent());
-                    helpDialog();
-                }
-            }
-        };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
-*/
+        useKilometers = sharedPreferences.getBoolean("use_kilometers", true);
 
         // sets dark mode (app must be relaunched)
-        Boolean darkModeBool = sharedPreferences.getBoolean("dark_mode_switch", false);
+        boolean darkModeBool = sharedPreferences.getBoolean("dark_mode_switch", false);
         if (!darkModeBool) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // dark mode off
         }
-        else {
+        if (darkModeBool) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // dark mode on
         }
 
@@ -105,14 +83,18 @@ public class MainActivity extends AppCompatActivity {
         findDistanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findDistanceBetween();
+
+                EditText mDestination = findViewById(R.id.distance_destination_input);
+                String destinationString = mDestination.getText().toString();
+
+                findDistanceDialogue(destinationString, useKilometers);
                 playButtonClick(this);
             }
         });
     }
 
     public void playButtonClick(View.OnClickListener v) {
-        mMediaPlayer = MediaPlayer.create(this, R.raw.note_f);
+        mMediaPlayer = MediaPlayer.create(this, R.raw.button_click);
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
@@ -126,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onStart() {
@@ -189,13 +170,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void findDistanceBetween() {
-        EditText mDestination = findViewById(R.id.distance_destination_input);
-        String destinationString = mDestination.getText().toString();
+    // calculates the distance from current location to given destinationString location
+    public float findDistance(String destinationString, boolean useKilometers) {
+
+        double destLatitude = 47.6062, destLongitude = -122.3321; // initializes longitude and latitude to Seattle
         Geocoder geoCoder = new Geocoder(this);
 
         Location currLocation = new Location("currLocation");
         Location destLocation = new Location("destLocation");
+
+        // Find the distance between location and destination
+        try {
+            List<Address> addresses = geoCoder.getFromLocationName(destinationString, 1);
+            if (addresses.size() > 0) {
+                destLatitude = addresses.get(0).getLatitude();
+                destLongitude = addresses.get(0).getLongitude();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        // sets college place coordinates
+        currLocation.setLatitude(currLatitude);
+        currLocation.setLongitude(currLongitude);
+
+        // sets destination coordinates
+        destLocation.setLatitude(destLatitude);
+        destLocation.setLongitude(destLongitude);
+
+       if (useKilometers) {
+           return currLocation.distanceTo(destLocation) / 1000;
+       }
+       else {
+           return (float) ((currLocation.distanceTo(destLocation) / 1000) * 0.62137);
+       }
+    }
+
+    // runs distance calculations on thread and displays a dialogue
+    public void findDistanceDialogue(String destinationString, boolean useKilometers) {
 
         // Create a background thread
         Thread thread = new Thread(new Runnable() {
@@ -203,39 +215,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                double destLatitude = 47.6062, destLongitude = -122.3321; // initializes longitude and latitude to Seattle
+                float distanceFloat = findDistance(destinationString, useKilometers);
+                DecimalFormat formattedDistance = new DecimalFormat("###.##");
+                String distanceString = formattedDistance.format(distanceFloat); // updates global value
+                String units = "";
 
-                // Find the distance between location and destination
-                try {
-                    List<Address> addresses = geoCoder.getFromLocationName(destinationString, 1);
-                    if (addresses.size() > 0) {
-                        destLatitude = addresses.get(0).getLatitude();
-                        destLongitude = addresses.get(0).getLongitude();
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                if (useKilometers) {
+                    units = "kilometers";
+                }
+                else {
+                    units = "miles";
                 }
 
-                // TODO: get current location
-
-                // sets college place coordinates
-                currLocation.setLatitude(currLatitude);
-                currLocation.setLongitude(currLongitude);
-
-                destLocation.setLatitude(destLatitude);
-                destLocation.setLongitude(destLongitude);
-
-                float distanceFloat = currLocation.distanceTo(destLocation) / 1000;
-                DecimalFormat formattedDistance = new DecimalFormat("###.##");
-                String distanceString = formattedDistance.format(distanceFloat);
-
-                // UI should only be updated by main thread
+                String finalUnits = units;
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         // creates dialogue for distance
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Distance between location and destination: " + distanceString + " kilometers from you. NOTE: Uses current location for Gogoleplex, unless you spoof location");
+                        builder.setMessage(destinationString + " is " + distanceString + " " + finalUnits + " from you.");
                         builder.setTitle("Distance");
                         builder.setCancelable(false);
                         builder.setPositiveButton("Close", null);
@@ -265,8 +263,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-
-
+    // displays dialogue when screen is touched. kinda useless
     public void touchDialog() {
         // creates object of AlertDialogue Builder class
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
