@@ -135,9 +135,9 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             //JSONObject user = response.getJSONObject("");
 
-                            String userTitle = response.getString("name");
-                            Log.e(TAG, "onResponse: " + userTitle);
-                            mTextViewResult.append(userTitle + "\n\n");
+                            String locationName = response.getString("name");
+                            Log.e(TAG, "onResponse: " + locationName);
+                            mTextViewResult.append(locationName + "\n\n");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
