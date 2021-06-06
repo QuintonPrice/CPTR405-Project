@@ -41,4 +41,16 @@
     <string name="calculate_distance">Calculate distance</string>
     <string name="title_activity_maps">Map</string>
     <string name="google_maps">Google Maps</string>
+
+    <string-array name="categories_array">
+        <item>Accomodations</item>
+        <item>Amusements</item>
+        <item>Sport</item>
+        <item>Shops</item>
+        <item>Food</item>
+        <item>Banks</item>
+        <item>Religion</item>
+        <item>Monuments</item>
+        <item>Urban Environment</item>
+    </string-array>
 </resources>

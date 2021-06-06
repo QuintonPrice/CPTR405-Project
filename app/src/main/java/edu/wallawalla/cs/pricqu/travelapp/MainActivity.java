@@ -22,18 +22,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.os.Bundle;
 import android.view.View;
 import android.location.Location;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,7 +43,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,14 +50,10 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-
 public class MainActivity extends AppCompatActivity {
 
     MediaPlayer mMediaPlayer;
-    double currLatitude = 46.0493, currLongitude = -118.3883; // initalizes current location to college place
+    double currLatitude = 46.0493, currLongitude = -118.3883; // initializes current location to college place
     long locationTime;
     boolean useKilometers = true;
     int LOCATION_REQUEST_CODE = 10001;
@@ -93,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
         // API variables
         mQueue = Volley.newRequestQueue(this);
         mTextViewResult = findViewById(R.id.APItext);
+
+        Spinner categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
 
         // find destinations button and functions
         final Button findDestinationsButton = findViewById(R.id.find_destinations);
@@ -407,6 +408,10 @@ public class MainActivity extends AppCompatActivity {
             Intent mapsIntent = new Intent(MainActivity.this, MapsActivity.class);
             startActivity(mapsIntent);
         }
+        else if (item.getItemId() == R.id.action_search_destinations) {
+            Intent searchIntent = new Intent(MainActivity.this, DestinationLookupActivity.class);
+            startActivity(searchIntent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -415,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        final EditText textBox = (EditText) findViewById(R.id.how_many_travelers);
+        final EditText textBox = (EditText) findViewById(R.id.distance_destination_input);
         CharSequence userText = textBox.getText();
         outState.putCharSequence("savedText", userText);
     }
@@ -423,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
     // for getting state values
     @Override
     public void onRestoreInstanceState(Bundle savedState) {
-        final EditText textBox = (EditText) findViewById(R.id.how_many_travelers);
+        final EditText textBox = (EditText) findViewById(R.id.location_input);
         CharSequence userText = savedState.getCharSequence("savedText");
         textBox.setText(userText);
     }
