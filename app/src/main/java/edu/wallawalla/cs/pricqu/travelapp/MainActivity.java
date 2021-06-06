@@ -27,16 +27,31 @@ import android.widget.EditText;
 import android.os.Bundle;
 import android.view.View;
 import android.location.Location;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,13 +62,17 @@ public class MainActivity extends AppCompatActivity {
     int LOCATION_REQUEST_CODE = 10001;
     private static final String TAG = "MainActivity";
     FusedLocationProviderClient fusedLocationProviderClient;
+    private RequestQueue mQueue;
+    TextView mTextViewResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // preferences variable
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // kilometers preference
         useKilometers = sharedPreferences.getBoolean("use_kilometers", true);
 
         // sets dark mode (app must be relaunched)
@@ -65,7 +84,12 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // dark mode on
         }
 
+        // location variablews
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // API variables
+        mQueue = Volley.newRequestQueue(this);
+        mTextViewResult = findViewById(R.id.APItext);
 
         // find destinations button and functions
         final Button findDestinationsButton = findViewById(R.id.find_destinations);
@@ -73,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { // TODO: Add functionality to find destinations
                 FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
-                fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
-                fragment.commit();
+                //fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
+                //fragment.commit();
+                jsonParse();
             }
         });
 
@@ -91,6 +116,37 @@ public class MainActivity extends AppCompatActivity {
                 playButtonClick(this);
             }
         });
+    }
+
+    private void jsonParse() {
+        String url = "https://jsonplaceholder.typicode.com/users";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject user = jsonArray.getJSONObject(i);
+
+                                String userTitle = user.getString("name");
+                                Log.e(TAG, "onResponse: " + userTitle);
+
+                                mTextViewResult.append(userTitle + ", completed: " + "\n\n");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(request);
     }
 
     public void playButtonClick(View.OnClickListener v) {
