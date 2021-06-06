@@ -33,6 +33,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -121,15 +122,15 @@ public class MainActivity extends AppCompatActivity {
     private void jsonParse() {
         String url = "https://jsonplaceholder.typicode.com/users";
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            JSONArray jsonArray = response.getJSONArray("");
+                            //JSONArray jsonArray = response.getJSONArray(Integer.parseInt(""));
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject user = jsonArray.getJSONObject(i);
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject user = response.getJSONObject(i);
 
                                 String userTitle = user.getString("name");
                                 Log.e(TAG, "onResponse: " + userTitle);
