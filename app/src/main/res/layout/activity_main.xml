@@ -20,61 +20,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/travel_radio"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="start"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/travel_question">
-
-        <RadioButton
-            android:id="@+id/radio_local"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/locally"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <RadioButton
-            android:id="@+id/radio_international"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/internationally"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/number_travelers_question"
-        style="@style/FontStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/how_many_travelers"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/destinationFragmentPlaceholder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/travel_radio" />
-
 
     <EditText
-        android:id="@+id/how_many_travelers"
+        android:id="@+id/location_input"
         style="@style/FontStyle"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="@string/_2"
-        android:inputType="numberSigned"
+        android:hint="Enter location"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_travelers_question" />
+        app:layout_constraintTop_toBottomOf="@+id/travel_question" />
 
     <Button
         android:id="@+id/find_destinations"
@@ -83,7 +41,7 @@
         android:text="@string/find_destinations"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/how_many_travelers" />
+        app:layout_constraintTop_toBottomOf="@+id/location_input" />
 
     <EditText
         android:id="@+id/distance_destination_input"

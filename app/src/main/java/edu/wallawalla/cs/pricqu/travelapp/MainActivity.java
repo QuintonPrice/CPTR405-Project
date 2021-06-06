@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     private RequestQueue mQueue;
     TextView mTextViewResult;
+    EditText mDestination;
+    String destinationString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
                 //fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
                 //fragment.commit();
-                jsonParse();
+                mDestination = findViewById(R.id.location_input);
+                destinationString = mDestination.getText().toString();
+
+                jsonParse(destinationString);
             }
         });
 
@@ -110,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                EditText mDestination = findViewById(R.id.distance_destination_input);
-                String destinationString = mDestination.getText().toString();
+                mDestination = findViewById(R.id.location_input);
+                destinationString = mDestination.getText().toString();
 
                 findDistanceDialogue(destinationString, useKilometers);
                 playButtonClick(this);
@@ -119,24 +124,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void jsonParse() {
-        String url = "https://jsonplaceholder.typicode.com/users";
+    private void jsonParse(String city) {
+        city = city.toLowerCase();
+        String url = "https://api.opentripmap.com/0.1/en/places/geoname?name=" + city + "&apikey=5ae2e3f221c38a28845f05b652a7f39e0918e84292a5fbe0e9042c2e";
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         try {
-                            //JSONArray jsonArray = response.getJSONArray(Integer.parseInt(""));
+                            //JSONObject user = response.getJSONObject("");
 
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject user = response.getJSONObject(i);
+                            String userTitle = response.getString("name");
+                            Log.e(TAG, "onResponse: " + userTitle);
+                            mTextViewResult.append(userTitle + "\n\n");
 
-                                String userTitle = user.getString("name");
-                                Log.e(TAG, "onResponse: " + userTitle);
-
-                                mTextViewResult.append(userTitle + ", completed: " + "\n\n");
-                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -412,12 +414,10 @@ public class MainActivity extends AppCompatActivity {
     // for saving state values
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // insert items that need to be saved. currently don't have any
         super.onSaveInstanceState(outState);
         final EditText textBox = (EditText) findViewById(R.id.how_many_travelers);
         CharSequence userText = textBox.getText();
         outState.putCharSequence("savedText", userText);
-
     }
 
     // for getting state values
