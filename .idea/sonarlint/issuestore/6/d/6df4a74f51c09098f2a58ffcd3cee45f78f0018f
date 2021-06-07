@@ -1,0 +1,33 @@
+
+U
+java:S1155Ø">Use isEmpty() to check whether the collection is empty or not.(›€Óß
+C
+java:S1604N"(Make this anonymous inner class a lambda(ì›¬ˆÿÿÿÿÿ
+>
+java:S1604Z"(Make this anonymous inner class a lambda(äôğä
+>
+java:S1604s"(Make this anonymous inner class a lambda(ÑÂğ
+D
+java:S1604"(Make this anonymous inner class a lambda(´¸©”üÿÿÿÿ
+D
+java:S1604œ"(Make this anonymous inner class a lambda(åà±™şÿÿÿÿ
+?
+java:S1604«"(Make this anonymous inner class a lambda(üÿÓÖ
+?
+java:S1604†"(Make this anonymous inner class a lambda(Ø€¦
+A
+java:S1659-"+Declare "currLongitude" on a separate line.(èÙ‹Ï
+t	java:S1161"`Rename this field "LOCATION_REQUEST_CODE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡»ª[
+H
+java:S1135P"2Complete the task associated to this TODO comment.(¢¯˜³
+Y
+java:S1858}"C"getString" returns a string, there's no need to call "toString()".(‰í˜Ø
+^
+java:S1858~"C"getString" returns a string, there's no need to call "toString()".(ü£Ş“øÿÿÿÿ
+^
+java:S1858"C"getString" returns a string, there's no need to call "toString()".(ôë‰ûÿÿÿÿ
+R	java:S125Š"<This block of commented-out lines of code should be removed.(Ùğ¼Ë
+f
+java:S1874´"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶şÿÿÿÿ
+G
+java:S1659Ï"+Declare "destLongitude" on a separate line.(è–±»ÿÿÿÿÿ

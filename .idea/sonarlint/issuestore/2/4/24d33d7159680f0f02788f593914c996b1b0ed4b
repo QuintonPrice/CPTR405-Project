@@ -1,0 +1,48 @@
+
+U
+java:S1155µ">Use isEmpty() to check whether the collection is empty or not.(›€Óß
+?
+java:S1604«"(Make this anonymous inner class a lambda(ÑÂð
+D
+java:S1604Ó"(Make this anonymous inner class a lambda(´¸©”üÿÿÿÿ
+?
+java:S1604Þ"(Make this anonymous inner class a lambda(„ˆ‚¢
+D
+java:S1604ä"(Make this anonymous inner class a lambda(öªÐ´úÿÿÿÿ
+D
+java:S1604ø"(Make this anonymous inner class a lambda(åà±™þÿÿÿÿ
+?
+java:S1604‡"(Make this anonymous inner class a lambda(üÿÓÖ
+D
+java:S1604ú"(Make this anonymous inner class a lambda(ñ øûÿÿÿÿ
+?
+java:S1604"(Make this anonymous inner class a lambda(„¬Ý™
+M
+java:S1128 "2Remove this unused import 'android.widget.Switch'.(¬Ü´¹üÿÿÿÿ
+a
+java:S1128"FRemove this unused import 'androidx.fragment.app.FragmentTransaction'.(¦ÝÚ¿þÿÿÿÿ
+A
+java:S1659:"+Declare "currLongitude" on a separate line.(èÙ‹Ï
+t	java:S116="`Rename this field "LOCATION_REQUEST_CODE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡»ª[
+U
+java:S1854´">Remove this useless assignment to local variable "testObject".(Ý…Âµ
+R	java:S125¼"<This block of commented-out lines of code should be removed.(ÌµÐ
+D
+java:S1172Ü"(Remove this unused method parameter "v".(¡í¡‘ÿÿÿÿÿ
+f
+java:S1874"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶þÿÿÿÿ
+G
+java:S1659¬"+Declare "destLongitude" on a separate line.(è–±»ÿÿÿÿÿ
+a
+java:S1854§"ERemove this useless assignment to local variable "destinationIntent".(ò“™Ÿþÿÿÿÿ
+R	java:S125©"<This block of commented-out lines of code should be removed.(ó”Æþ
+N
+java:S1135¨"2Complete the task associated to this TODO comment.(þÓèßüÿÿÿÿ
+Q
+java:S1161Ø":Add the "@Override" annotation above this method signature(ôó§è
+=	java:S131Ú""Add a default case to this switch.(ãÁð™øÿÿÿÿ
+Q	java:S125Ý"<This block of commented-out lines of code should be removed.(£ø¬f
+F
+java:S1481´"/Remove this unused "testObject" local variable.(Ý…Âµ
+R
+java:S1481§"6Remove this unused "destinationIntent" local variable.(ò“™Ÿþÿÿÿÿ
