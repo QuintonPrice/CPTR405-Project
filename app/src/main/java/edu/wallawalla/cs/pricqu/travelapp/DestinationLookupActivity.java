@@ -60,7 +60,7 @@ public class DestinationLookupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_destination_lookup);
 
-        // location variablews
+        // location variables
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // API variables

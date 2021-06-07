@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     Integer maxResults = 50;
     String units;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (tempCategory.equals("Accommodations")) {
                     category = "accomodations";
                 } else if (tempCategory.equals("All")) {
-                    category = "interesting_places";
+                    category = "interesting_places"; // default value for the API search
                 }
 
                 mRadius = findViewById(R.id.radius_input);
@@ -196,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
                                 DecimalFormat formattedDistance = new DecimalFormat("#####.#");
                                 String distanceString = formattedDistance.format(locationDistance); // updates global value
 
-
                                 if ((!locationName.equals("")) && locationDistance >= 0) {
                                     mTextViewResult.append("Name: " + locationName + "\n");
                                     mTextViewResult.append("Distance: " + distanceString + " " +units + "\n\n");
@@ -253,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                     currLatitude = location.getLatitude();
                     currLongitude = location.getLongitude();
                     locationTime = location.getTime();
-                    Log.i(TAG, "currLatitude: " + currLatitude + "currLongitude: " + currLongitude);
+                    Log.d(TAG, "currLatitude: " + currLatitude + "currLongitude: " + currLongitude);
                 } else {
                     Log.d(TAG, "onSuccess: Location was null...");
                 }
@@ -336,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         // creates object of AlertDialogue Builder class
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         // message for the dialogue
-        builder.setMessage("Help menu will be added later!");
+        builder.setMessage("To find locations with the desired paramaters, fill out the fields and press 'Find Results!' The resulting list will be a collection of items returned by the API, as well as the distance from your current location");
         // alert title
         builder.setTitle("Help Menu");
         // keeps it so that if the user clicks outside of the dialogue box, it will stay up
