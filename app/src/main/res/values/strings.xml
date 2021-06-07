@@ -41,16 +41,25 @@
     <string name="calculate_distance">Calculate distance</string>
     <string name="title_activity_maps">Map</string>
     <string name="google_maps">Google Maps</string>
+    <string name="view_results">View Results!</string>
+    <string name="distance_to_location">Distance to Location</string>
+    <string name="enter_location">Enter Location:</string>
+    <string name="destination">Destination</string>
+    <string name="search_destinations">Search Destinations</string>
+    <string name="find_results">Find Results!</string>
+    <string name="enter_radius">Enter radius</string>
+    <string name="to_find_locations_near_you_fill_out_forms_below_and_press_find_results">To find locations near you, fill out forms below and press Find Results!</string>
 
     <string-array name="categories_array">
-        <item>Accomodations</item>
+        <item>Accommodations</item>
         <item>Amusements</item>
         <item>Sport</item>
         <item>Shops</item>
-        <item>Food</item>
+        <item>Foods</item>
         <item>Banks</item>
         <item>Religion</item>
         <item>Monuments</item>
         <item>Urban Environment</item>
+        <item>All</item>
     </string-array>
 </resources>

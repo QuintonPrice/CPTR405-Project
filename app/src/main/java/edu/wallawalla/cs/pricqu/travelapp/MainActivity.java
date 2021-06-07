@@ -3,7 +3,6 @@ package edu.wallawalla.cs.pricqu.travelapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.MediaPlayer;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.location.Location;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -43,6 +44,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,8 +63,13 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     private RequestQueue mQueue;
     TextView mTextViewResult;
-    EditText mDestination;
-    String destinationString;
+    EditText mRadius;
+    String radius;
+    String category = "";
+    EditText mResults;
+    Integer maxResults = 50;
+    String units;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,73 +80,130 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         // kilometers preference
         useKilometers = sharedPreferences.getBoolean("use_kilometers", true);
-
-        // sets dark mode (app must be relaunched)
-        boolean darkModeBool = sharedPreferences.getBoolean("dark_mode_switch", false);
-        if (!darkModeBool) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // dark mode off
-        }
-        if (darkModeBool) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // dark mode on
+        if (useKilometers) {
+            units = "km";
+        } else {
+            units = "mi";
         }
 
-        // location variablews
+        TextView selectRadiusTextView = findViewById(R.id.select_radius_text);
+        selectRadiusTextView.setText("");
+        selectRadiusTextView.append("Radius From Location (" + units + "):");
+
+        // location variables
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // API variables
         mQueue = Volley.newRequestQueue(this);
         mTextViewResult = findViewById(R.id.APItext);
+        mTextViewResult.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        Spinner categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+        Spinner categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(adapter);
 
         // find destinations button and functions
-        final Button findDestinationsButton = findViewById(R.id.find_destinations);
-        findDestinationsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { // TODO: Add functionality to find destinations
-                FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
-                //fragment.replace(R.id.destinationFragmentPlaceholder, new DestinationsFragment());
-                //fragment.commit();
-                mDestination = findViewById(R.id.location_input);
-                destinationString = mDestination.getText().toString();
-
-                jsonParse(destinationString);
-            }
-        });
-
-        // find distance between locations
-        final Button findDistanceButton = findViewById(R.id.destination_distance_button);
-        findDistanceButton.setOnClickListener(new View.OnClickListener() {
+        final Button findResultsButton = findViewById(R.id.find_results_button);
+        findResultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mDestination = findViewById(R.id.location_input);
-                destinationString = mDestination.getText().toString();
+                getLastLocation();
+                String latString = String.valueOf(currLatitude);
+                String lonString = String.valueOf(currLongitude);
 
-                findDistanceDialogue(destinationString, useKilometers);
+                String tempCategory = categorySpinner.getSelectedItem().toString();
+                category = tempCategory.toLowerCase();
+
+
+                if (tempCategory.equals("Monuments")) {
+                    category = "monuments_and_memorials";
+                } else if (tempCategory.equals("Urban Environment")) {
+                    category = "urban_environment";
+                } else if (tempCategory.equals("Accommodations")) {
+                    category = "accomodations";
+                } else if (tempCategory.equals("All")) {
+                    category = "interesting_places";
+                }
+
+                mRadius = findViewById(R.id.radius_input);
+                if (mRadius.getText().toString().equals("")) {
+                    mRadius.setText("100");
+                }
+                radius = mRadius.getText().toString();
+                double radiusDouble = Double.parseDouble(radius);
+
+                // convert either miles or kilometers to meters (which is used by API call)
+                if (useKilometers) {
+                    radiusDouble = radiusDouble * 1000;
+                } else {
+                    radiusDouble = radiusDouble * 1609.344;
+                }
+
+                radiusDouble = radiusDouble * 1000;
+
+                mResults = findViewById(R.id.max_results_input);
+                if (mResults.getText().toString().equals("")) {
+                    mResults.setText("50");
+                }
+                maxResults = Integer.parseInt(mResults.getText().toString());
+
+                jsonParse(category, latString, lonString, radiusDouble, maxResults);
                 playButtonClick(this);
             }
         });
     }
 
-    private void jsonParse(String city) {
-        city = city.toLowerCase();
-        String url = "https://api.opentripmap.com/0.1/en/places/geoname?name=" + city + "&apikey=5ae2e3f221c38a28845f05b652a7f39e0918e84292a5fbe0e9042c2e";
+    private void jsonParse(String categoryString, String lat, String lon, Double radiusDouble, int maxResults) {
+        String radiusString = String.valueOf(radiusDouble);
 
+        Log.e(TAG, "Lat: " + lat);
+        Log.e(TAG, "Long: " + lon);
+
+        if (maxResults > 50) {
+            maxResults = 50;
+        }
+        String maxResultsString = String.valueOf(maxResults);
+
+        String url = "https://api.opentripmap.com/0.1/en/places/radius?radius=" + radiusString + "&lon=" + lon + "&lat=" + lat +"&kinds=" + categoryString + "&limit=" + maxResultsString + "&apikey=5ae2e3f221c38a28845f05b652a7f39e0918e84292a5fbe0e9042c2e";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            //JSONObject user = response.getJSONObject("");
+                            mTextViewResult.setText("");
+                            Log.e(TAG, "API URL: " + url);
 
-                            String locationName = response.getString("name");
-                            Log.e(TAG, "onResponse: " + locationName);
-                            mTextViewResult.append(locationName + "\n\n");
+                            JSONArray jsonArray = response.getJSONArray("features");
+                            JSONObject test = jsonArray.getJSONObject(1);
+                            JSONObject testObject = test.getJSONObject("properties");
 
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject placeObject = jsonArray.getJSONObject(i);
+                                JSONObject place = placeObject.getJSONObject("properties");
+
+                                String locationName = place.getString("name");
+                                double locationDistance = place.getDouble("dist");
+                                //String openStreetMap = place.getString("osm");
+
+                                if (useKilometers) {
+                                    locationDistance = locationDistance / 1000;
+                                } else {
+                                    locationDistance = locationDistance / 1609;
+                                }
+
+                                DecimalFormat formattedDistance = new DecimalFormat("#####.#");
+                                String distanceString = formattedDistance.format(locationDistance); // updates global value
+
+
+                                if ((!locationName.equals("")) && locationDistance >= 0) {
+                                    mTextViewResult.append("Name: " + locationName + "\n");
+                                    mTextViewResult.append("Distance: " + distanceString + " " +units + "\n\n");
+                                }
+
+                            }
+                            mTextViewResult.append("\n\n");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -154,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void playButtonClick(View.OnClickListener v) {
-        mMediaPlayer = MediaPlayer.create(this, R.raw.button_click);
+        mMediaPlayer = MediaPlayer.create(this, R.raw.note_f);
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
@@ -266,45 +330,6 @@ public class MainActivity extends AppCompatActivity {
        }
     }
 
-    // runs distance calculations on thread and displays a dialogue
-    public void findDistanceDialogue(String destinationString, boolean useKilometers) {
-
-        // Create a background thread
-        Thread thread = new Thread(new Runnable() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void run() {
-
-                float distanceFloat = findDistance(destinationString, useKilometers);
-                DecimalFormat formattedDistance = new DecimalFormat("###.##");
-                String distanceString = formattedDistance.format(distanceFloat); // updates global value
-                String units = "";
-
-                if (useKilometers) {
-                    units = "kilometers";
-                }
-                else {
-                    units = "miles";
-                }
-
-                String finalUnits = units;
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // creates dialogue for distance
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage(destinationString + " is " + distanceString + " " + finalUnits + " from you.");
-                        builder.setTitle("Distance");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("Close", null);
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    }
-                });
-            }
-        });
-        thread.start();
-    }
 
     // dialogue for help button
     public void helpDialog() {
@@ -396,7 +421,8 @@ public class MainActivity extends AppCompatActivity {
         else if (item.getItemId() == R.id.action_destinations_list) {
             // Destination list selected
             Intent destinationIntent = new Intent(MainActivity.this,CityListActivity.class);
-            startActivity(destinationIntent);
+            // TODO: Enable this is if you want to see the master / detail view. I did not find it necessary to implement it w/ any values but it is implemented
+            // startActivity(destinationIntent);
             return true;
         }
         else if (item.getItemId() == R.id.action_exit_app) {
@@ -420,17 +446,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        final EditText textBox = (EditText) findViewById(R.id.distance_destination_input);
-        CharSequence userText = textBox.getText();
-        outState.putCharSequence("savedText", userText);
+        final EditText radiusSave = (EditText) findViewById(R.id.radius_input);
+        final EditText maxSave = (EditText) findViewById(R.id.max_results_input);
+
+        CharSequence radiusInput = radiusSave.getText();
+        CharSequence maxInput = maxSave.getText();
+        outState.putCharSequence("radius", radiusInput);
+        outState.putCharSequence("maxInput", maxInput);
+
     }
 
     // for getting state values
     @Override
     public void onRestoreInstanceState(Bundle savedState) {
-        final EditText textBox = (EditText) findViewById(R.id.location_input);
-        CharSequence userText = savedState.getCharSequence("savedText");
-        textBox.setText(userText);
+        final EditText radiusSave = (EditText) findViewById(R.id.radius_input);
+        final EditText maxSave = (EditText) findViewById(R.id.max_results_input);
+
+        CharSequence radiusInput = savedState.getCharSequence("radius");
+        radiusSave.setText(radiusInput);
+
+        CharSequence maxInput = savedState.getCharSequence("maxInput");
+        maxSave.setText(maxInput);
     }
 
     public boolean onTouchEvent(MotionEvent event){
@@ -438,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 action = "ACTION_DOWN";
-                touchDialog();
+                // touchDialog();
                 break;
             case MotionEvent.ACTION_MOVE:
                 action = "ACTION_MOVE";

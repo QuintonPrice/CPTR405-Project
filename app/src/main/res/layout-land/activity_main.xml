@@ -4,83 +4,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/bgColor"
     tools:context=".MainActivity">
 
+
     <TextView
-        android:id="@+id/travel_question"
-        android:text="@string/where_would_you_like_to_travel"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+        android:id="@+id/select_category"
         style="@style/FontStyle"
-        />
-
-    <RadioGroup
-        android:id="@+id/travel_radio"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/travel_question"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" >
-
-        <RadioButton
-            android:id="@+id/radio_local"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/locally"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <RadioButton android:id="@+id/radio_international"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/internationally" />
-
-        <Button
-            android:id="@+id/find_destinations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/find_destinations"
-            />
-
-    </RadioGroup>
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:background="@color/bgColor"
+        android:text="Select a Category:"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/number_travelers_question"
-        android:text="@string/how_many_travelers"
-        android:layout_width="match_parent"
+        android:id="@+id/select_radius_text"
+        style="@style/FontStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/travel_radio"
-        />
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/bgColor"
+        android:gravity="center"
+        android:text="Radius From Location (km):"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category_spinner" />
+
+    <TextView
+        android:id="@+id/max_results_text"
+        style="@style/FontStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/bgColor"
+        android:text="Number of Results (Max 50)"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radius_input" />
 
     <EditText
-        android:id="@+id/how_many_travelers"
-        android:inputType="numberSigned"
-        app:layout_constraintTop_toBottomOf="@id/number_travelers_question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/_2"
+        android:id="@+id/radius_input"
         style="@style/FontStyle"
-        android:autofillHints="2" />
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Radius"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_radius_text" />
+
+    <EditText
+        android:id="@+id/max_results_input"
+        style="@style/FontStyle"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Max Results"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/max_results_text" />
+
+    <Button
+        android:id="@+id/find_results_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/find_results"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/max_results_input" />
 
     <TextView
-        android:id="@+id/radio_output"
-        android:text=""
+        android:id="@+id/APItext"
+        android:layout_width="301dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/travel_radio" />
+        android:scrollbars="vertical"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.558"
+        app:layout_constraintStart_toEndOf="@+id/select_category"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="300dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center|fill_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_category" />
 
-    <!-- Implement this instead of the RadioGroup above   <Spinner
-            android:id="@+id/destinationSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

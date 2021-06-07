@@ -52,7 +52,8 @@ public class DestinationLookupActivity extends AppCompatActivity {
     EditText mDestination;
     String destinationString;
     private RequestQueue mQueue;
-    TextView mTextViewResult;
+    TextView mTextViewTitle;
+    TextView mTextViewContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,8 @@ public class DestinationLookupActivity extends AppCompatActivity {
 
         // API variables
         mQueue = Volley.newRequestQueue(this);
-        mTextViewResult = findViewById(R.id.destinationTextView);
+        mTextViewTitle = findViewById(R.id.destinationTextViewTitle);
+        mTextViewContent = findViewById(R.id.destinationTextViewContent);
 
         // preferences variable
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -88,7 +90,6 @@ public class DestinationLookupActivity extends AppCompatActivity {
         findDistanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mDestination = findViewById(R.id.locationName);
                 destinationString = mDestination.getText().toString();
                 findDistanceDialogue(destinationString, useKilometers);
@@ -115,11 +116,26 @@ public class DestinationLookupActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            //JSONObject user = response.getJSONObject("");
+                            // resets textView title
+                            mTextViewContent.setText("");
+                            mTextViewTitle.setText("");
 
                             String locationName = response.getString("name");
-                            Log.e(TAG, "onResponse: " + locationName);
-                            mTextViewResult.append(locationName + "\n\n");
+                            String locationCountry = response.getString("country");
+                            String locationLat = response.getString("lat").toString();
+                            String locationLon = response.getString("lon").toString();
+                            String locationPop = response.getString("population").toString();
+
+                            // sets title
+                            mTextViewTitle.setText(locationName);
+
+                            // sets content
+                            mTextViewContent.append("Country: " +locationCountry + "\n");
+                            mTextViewContent.append("Population: " + locationPop + "\n");
+                            mTextViewContent.append("Latitude: " + locationLat + "\n");
+                            mTextViewContent.append("Longitude: " + locationLon + "\n");
+
+                            //Log.e(TAG, "onResponse: " + locationName);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

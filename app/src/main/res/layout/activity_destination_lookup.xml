@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="View Results!"
+        android:text="@string/view_results"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/locationName" />
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Distance to Location"
+        android:text="@string/distance_to_location"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewResults" />
@@ -31,7 +31,7 @@
         android:layout_width="190dp"
         android:layout_height="56dp"
         android:gravity="center"
-        android:text="Enter Location:"
+        android:text="@string/enter_location"
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -49,7 +49,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="Destination"
+        android:hint="@string/destination"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -57,11 +57,26 @@
         app:layout_constraintTop_toBottomOf="@+id/enterLocation" />
 
     <TextView
-        android:id="@+id/destinationTextView"
+        android:id="@+id/destinationTextViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:textColor="#000000"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/findDistance" />
+
+    <TextView
+        android:id="@+id/destinationTextViewContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="8sp"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/destinationTextViewTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
